@@ -14,7 +14,21 @@ describe('Sprint 7 Challenge Learner Tests', () => {
     [4] sum('1', 2) // returns 3
     [5] sum('10', '3') // returns 13
   */
-
+    it('pass valid numbers', () => {
+      expect(sum()).toBe(sum())
+    })
+    it('pass valid numbers', () => {
+      expect(sum(2, 'seven')).toBe(sum())
+    })
+    it('pass valid numbers', () => {
+      expect(sum(1, 3)).toBe(4)
+    })
+    it('pass valid numbers', () => {
+      expect(sum('1', 2)).toBe(3)
+    })
+    it('pass valid numbers', () => {
+      expect(sum('10', '3')).toBe(13)
+    })
   /*
   👉 TASK 2 - Integration Testing of HelloWorld component at the bottom of this module
 
@@ -29,9 +43,25 @@ describe('Sprint 7 Challenge Learner Tests', () => {
     [5] renders a text that reads "JavaScript is pretty awesome"
     [6] renders a text that includes "javaScript is pretty" (use exact = false)
   */
-  test('you can comment out this test', () => {
-    expect(true).toBe(false)
-  })
+  // test('you can comment out this test', () => {
+  //   expect(true).toBe(false)
+  // })
+  it('component renders correctly', () => {
+    render(<HelloWorld
+    homeProp = "Home"
+    aboutProp = "About"
+    blogProp = "Blog"
+    truthProp = "The Truth"
+    awesomeJavaprop = "Javascript is pretty awesome"
+    prettyJavaProp = "Javascript is pretty"
+    />)
+    expect(screen.queryByText('Home')).toBeInTheDocument()
+    expect(screen.queryByText('About')).toBeInTheDocument()
+    expect(screen.queryByText('Blog')).toBeInTheDocument()
+    expect(screen.queryByText('The Truth')).toBeInTheDocument()
+    expect(screen.queryByText('JavaScript is pretty awesome', {exact:false})).toBeInTheDocument()
+    
+    })
 })
 
 function sum(a, b) {

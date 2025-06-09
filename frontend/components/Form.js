@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import * as yup from 'yup';
+import axios from "axios"
 
 // 👇 Here are the validation errors you will use with Yup.
 const validationErrors = {
@@ -30,7 +31,8 @@ const toppings = [
 export default function Form() {
 const [initialValues, setInitialValues] = useState({fullName:"", size:"", toppings:[]})
 const [initialErrors, setInitialErrors] = useState({fullName:"", size:"", toppings:""})
-
+const [formSucces, setFormSucces] = useState();
+const [formError, setFormError] = useState();
 const [isValid, setIsValid] = useState(false);
 
 
@@ -46,11 +48,22 @@ const validationHandler = (elementName, value) => {
   })
 }
 
-
+// console.log(initialValues.toppings);
 
 const onSubmit = e => {
   e.preventDefault()
-  console.log(e.initialValues)
+ axios.post("http://localhost:9009/api/order",initialValues)
+ .then(res => {
+  setInitialValues({fullName:"", size:"", toppings:[]})
+  setFormSucces(res.data.message)
+  setFormError()
+ })
+ .catch(err => {
+  setFormError(err.message)
+  setFormSucces()
+  
+ })
+
 }
 
 const onNameChange = e => {
@@ -91,12 +104,12 @@ const onCheckBoxChange = e => {
   return (
     <form>
       <h2>Order Your Pizza</h2>
-      {true && <div className='success'>Thank you for your order!</div>}
-      {true && <div className='failure'>Something went wrong</div>}
+      {formSucces && <div className='success'>{formSucces}</div>}
+      {formError && <div className='failure'>{formError}</div>}
 
       <div className="input-group">
         <div>
-          <label htmlFor="fullName">Full Name</label><br />
+          <label htmlFor="fullName">FullName</label><br />
           <input placeholder="Type full name" id="fullName" type="text" value={initialValues.fullName} 
           onChange={onNameChange}
           />
@@ -109,9 +122,9 @@ const onCheckBoxChange = e => {
           <label htmlFor="size" >Size</label><br />
           <select id="size" value={initialValues.size} onChange={onSizeChange}>
             <option value="">----Choose Size----</option>
-            <option value="S">S</option>
-            <option value="M">M</option>
-            <option value="L">L</option>
+            <option value="S">Small</option>
+            <option value="M">Medium</option>
+            <option value="L">Large</option>
             {/* Fill out the missing options */}
           </select>
         </div>
@@ -132,7 +145,7 @@ const onCheckBoxChange = e => {
         </label>)}
       </div>
       {/* 👇 Make sure the submit stays disabled until the form validates! */}
-      <input type="submit" disabled={!isValid} onSubmit={onSubmit}/>
+      <input type="submit" disabled={!isValid} onClick={onSubmit}/>
     </form>
   )
 }
