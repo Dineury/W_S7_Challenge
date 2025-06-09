@@ -15,10 +15,14 @@ describe('Sprint 7 Challenge Learner Tests', () => {
     [5] sum('10', '3') // returns 13
   */
     it('pass valid numbers', () => {
-      expect(sum()).toBe(sum())
+      expect(() => {
+        sum().toBe(sum())
+      }).toThrow()
     })
     it('pass valid numbers', () => {
-      expect(sum(2, 'seven')).toBe(sum())
+     expect(() => {
+        sum(2,'seven').toBe(sum())
+      }).toThrow()
     })
     it('pass valid numbers', () => {
       expect(sum(1, 3)).toBe(4)
